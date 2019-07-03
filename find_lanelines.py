@@ -419,17 +419,3 @@ def image_pipeline(image):
              (70, 140), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (255, 255, 255),3)
 
     return result
-
-'''
-wide_dist_pickle = pickle.load( open("wide_dist_pickle.p", "rb" ) )
-mtx = wide_dist_pickle["mtx"]
-dist = wide_dist_pickle["dist"]
-line = Find_line()
-
-from moviepy.editor import VideoFileClip
-# run image pipeline with video
-output = 'lanefinding_video_result.mp4'
-clip1 = VideoFileClip("project_video.mp4")
-white_clip = clip1.fl_image(image_pipeline)  #NOTE: this function expects color images!!
-white_clip.write_videofile(output, audio=False)
-'''
