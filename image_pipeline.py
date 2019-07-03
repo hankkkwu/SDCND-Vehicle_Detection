@@ -184,7 +184,6 @@ def draw_labeled_bboxes(img, labels):
 
 def vehicle_detection_pipeline(img):
     # ystart, ystop, scale, overlap, color
-    # global frames
     searches = [
         (380, 480, 1.0, (0, 0, 255)),  # 64x64
         (380, 550, 1.6, (0, 255, 0)),  # 101x101
@@ -212,12 +211,13 @@ def vehicle_detection_pipeline(img):
     if len(frames) == 3:
         all_frames_heatmap -= frames[0] * 0.3**5
 
-    all_frames_heatmap = all_frames_heatmap*0.8 + current__frame_heat # + all_frames_heatmap
+    all_frames_heatmap = all_frames_heatmap*0.8 + current__frame_heat
 
     frames.append(all_frames_heatmap)
-
+    # Apply threshold to help remove false positives
     heat = apply_threshold(all_frames_heatmap, len(frames))
-
+    # np.clip : Clip (limit) the values in an array.
+    #           Given an interval, values outside the interval are clipped to the interval edges.
     heatmap = np.clip(heat, 0, 255)
     # Find final boxes from heatmap using label function
     labels = label(heatmap)
@@ -276,6 +276,7 @@ def combined_pipeline(img):
     result = vehicle_detection_pipeline(undist)
     combined = lane_finding_pipeline(result)
     return combined
+    
 # load a pe-trained svc model from a serialized (pickle) file
 dist_pickle = pickle.load( open("svc_pickle.p", "rb" ) )
 
@@ -291,6 +292,7 @@ color_space = dist_pickle["color_space"]
 # ystart, ystop, scale, overlap, color
 
 from find_lanelines import *
+# for undistort image
 wide_dist_pickle = pickle.load( open("wide_dist_pickle.p", "rb" ) )
 mtx = wide_dist_pickle["mtx"]
 dist = wide_dist_pickle["dist"]
@@ -304,7 +306,7 @@ plt.imshow(vehicle_detection_pipeline(image))
 plt.show()
 '''
 # NOTE: f1_image function expects color images!!
-outfile = 'comb_result.mp4'
-clip1 = VideoFileClip("test_video.mp4")
+outfile = 'combined_result.mp4'
+clip1 = VideoFileClip("project_video.mp4")
 white_clip = clip1.fl_image(combined_pipeline)
 white_clip.write_videofile(outfile, audio=False)
