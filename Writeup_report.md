@@ -6,7 +6,7 @@
 The goals / steps of this project are the following:
 
 * Perform a Histogram of Oriented Gradients (HOG) feature extraction on a labeled training set of images and train a classifier Linear SVM classifier
-* Optionally, you can also apply a color transform and append binned color features, as well as histograms of color, to your HOG feature vector. 
+* Optionally, you can also apply a color transform and append binned color features, as well as histograms of color, to your HOG feature vector.
 * Note: for those first two steps don't forget to normalize your features and randomize a selection for training and testing.
 * Implement a sliding-window technique and use your trained classifier to search for vehicles in images.
 * Run your pipeline on a video stream (start with the test_video.mp4 and later implement on full project_video.mp4) and create a heat map of recurring detections frame by frame to reject outliers and follow detected vehicles.
@@ -98,4 +98,4 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, First I take features from `vehicle` and `non-vehicle` images using HOG, bin spatial and color histogram techniques, then I used those features to train a linear SVM classifier. Second, I apply Sliding Window Search technique to search for vehicles in a image, then draw the bounding boxes on the vehicles it detected. I think this pipeline might fail when there are others objects, like motocrycles, bikes, or pedestrian etc. on the road, because my SVM model can only classify car and non-car. I might improve it by using YOLO technique, if I were going to pursue this project further.  
+Here I'll talk about the approach I took, First I took features from `vehicle` and `non-vehicle` images using HOG, bin spatial and color histogram techniques, then I used those features to train a linear SVM classifier. Second, I apply Sliding Window Search technique to search for vehicles in a image, then draw the bounding boxes on the vehicles it detected. I think this pipeline might fail when there are others objects(like motocrycles, bikes, or pedestrian etc.) near by vehicles, because my SVM model can only classify car and non-car. It might also fail to distinguish each vehicle with individual bounding box when there are more vehicles on the road, I might improve it by using YOLO technique, if I am going to pursue this project further.  
